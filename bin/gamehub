@@ -1,0 +1,4 @@
+require_relative("../lib/gamehub.rb")
+
+game = GameHub.new
+# game.play
