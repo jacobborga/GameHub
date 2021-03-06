@@ -7,7 +7,7 @@ class GameHub
     def initialize 
         puts CLEAR_SCREEN
         get_player_name
-        deposit_cash
+        deposit_usd
         display_main_menu
     end
 
