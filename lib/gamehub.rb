@@ -1,4 +1,7 @@
-require 'awesome_print'
+require_relative("./tictactoe.rb")
+require_relative("./rockpaperscissors.rb")
+require_relative("./hangman.rb")
+require_relative("./blackjack.rb")
 
 CLEAR_SCREEN = "\e[H\e[2J"
 
@@ -20,6 +23,7 @@ class GameHub
     def deposit_cash
         puts "Please enter a cash $ amount you would like to exchange for tokens..."
         @usd_balance = gets.chomp 
+        @usd_balance = @usd_balance.to_i
         puts CLEAR_SCREEN
         exchange_rate
     end
@@ -41,20 +45,51 @@ class GameHub
     def navigate_menu(user_input)
         case user_input.to_i
         when 1
-            puts "Tic-Tac-Toe"
+            puts CLEAR_SCREEN
+            bet = get_bet
+            ttt = TicTacToe.new(bet)
+            # ttt.play
+            display_main_menu
         when 2
-            puts "Rock-Paper-Scissors"
+            puts CLEAR_SCREEN
+            rps = RPS.new
+            # rps.play
+            display_main_menu
         when 3
-            puts "Hangman"
+            puts CLEAR_SCREEN
+            hangman = Hangman.new
+            # hangman.play
+            display_main_menu
         when 4
-            puts "Blackjack"
+            puts CLEAR_SCREEN
+            blackjack = BlackJack.new 
+            # blackjack.play 
+            display_main_menu
         when 5
-            puts "Exit"
+            puts CLEAR_SCREEN
+            exit
         else
             puts CLEAR_SCREEN
             puts "Please enter a valid option..."
             display_main_menu
         end
+    end
+
+    def get_bet
+        puts "Please enter an amount you would like to play (MAX: #{@balance})"
+        bet = gets.chomp
+        bet = bet.to_i
+        if bet < 99
+            puts "Please enter a play amount larger than 100"
+            get_bet
+        elsif bet > @balance
+            puts "The maximum amount you can play with is #{@balance}"
+            get_bet
+        elsif bet == String
+            puts "Please enter a valid play amount (100-#{@balance})"
+            get_bet
+        end
+        return bet
     end
 end
 
