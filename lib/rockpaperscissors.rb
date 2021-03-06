@@ -12,10 +12,23 @@ class RPS
         @balance
     end
 
+    def get_player_choice
+        puts "Please enter either rock/paper/scissors for your choice: "
+        user_input = gets.chomp
+        if @choices.include?(user_input)
+            @player_hand = @choices.delete(user_input)
+            puts CLEAR_SCREEN
+        else
+            puts CLEAR_SCREEN
+            puts "Please enter a correct option (rock/paper/scissors)..."
+            get_player_choice
+        end
+    end
+
     def play 
         @choices = @choices.shuffle!
+        get_player_choice
         @cpu_hand = @choices.pop
-        @player_hand = @choices.pop
         puts "You have: #{@player_hand}"
         puts "Type 'shoot' to determine who won!"
         input = gets.chomp
