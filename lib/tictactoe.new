@@ -56,6 +56,10 @@ class TicTacToe
         @board.count{|token| token == "X" || token == "O"}
     end
 
+    def computer_decision
+        puts @board.find_index("")
+    end
+
     def turn
         if current_player == "X"
             puts "Please enter a number 1-9: "
@@ -72,6 +76,8 @@ class TicTacToe
             input = computer_decision
             move(input, "O")
             display_board
+        end
+    end
 
     def won?
         WIN_COMBINATIONS.each do |combo|
