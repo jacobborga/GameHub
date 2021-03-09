@@ -96,12 +96,14 @@ class GameHub
             display_main_menu
         when 4
             puts CLEAR_SCREEN
-            blackjack = BlackJack.new 
-            # blackjack.play 
+            bet = get_bet
+            @balance -= bet
+            blackjack = BlackJack.new(bet)
+            @balance += blackjack.balance
             display_main_menu
         when 5
             puts CLEAR_SCREEN
-            deposit_cash
+            deposit_usd
             display_main_menu
         when 6
             puts CLEAR_SCREEN
