@@ -1,16 +1,24 @@
 CLEAR_SCREEN = "\e[H\e[2J"
 
 class Hangman 
-    def initialize 
-        puts "Welcome to Hangman!"
+    def initialize(bet)
         load_data
         @secret_word = @word_list[rand(854)].chars
         @guess = Array.new(@secret_word.length, " _ ")
         @num_of_guesses = 6
+        @starting_bal = bet
+        @balance = bet
+        play
+    end
+
+    def balance
+        @balance
     end
 
     def display_word
-        puts @guess.join
+        puts "Welcome to Hangman!"
+        puts "Bet: #{@balance}"
+        puts @guess.join.capitalize
     end
 
     def get_guess
@@ -28,6 +36,16 @@ class Hangman
         if @secret_word.include?(user_input.downcase)
             puts CLEAR_SCREEN
             puts "The guess was correct!"
+            if @secret_word.count(user_input) > 1
+                index = @secret_word.each_with_index.select { |char, index| char == user_input.downcase }.map { |pair| pair[1] }
+                counter = 0
+                until counter == index.length
+                    @guess[index[counter]] = user_input.downcase
+                end
+            else
+                index = @secret_word.find_index(user_input.downcase)
+                @guess[index] = user_input.downcase
+            end
         else
             puts CLEAR_SCREEN
             puts "The guess was incorrect..."
@@ -41,11 +59,23 @@ class Hangman
         @word_list = file.read.split.map(&:chomp)
     end
 
-    def over?
+    def win?
         if @guess == @secret_word
+            @balance *= 2
             return true
         else
             return false
+        end
+    end
+
+    def over?
+        if win?
+            return true
+        elsif !win? && @num_of_guesses == 0
+            @balance -= @balance
+            return true
+        else
+            return false 
         end
     end
 
@@ -54,6 +84,9 @@ class Hangman
             display_word
             get_guess
         end
-        puts "You have won!"
+        puts "You have #{@win ? "won #{@balance}":"lost #{@starting_bal}"} tokens!"
+        puts @guess.join.capitalize
+        sleep(3)
+        puts CLEAR_SCREEN
     end
 end

@@ -89,8 +89,10 @@ class GameHub
             display_main_menu
         when 3
             puts CLEAR_SCREEN
-            hangman = Hangman.new
-            hangman.play
+            bet = get_bet
+            @balance -= bet
+            hangman = Hangman.new(bet)
+            @balance += hangman.balance
             display_main_menu
         when 4
             puts CLEAR_SCREEN
