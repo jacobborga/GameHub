@@ -6,6 +6,7 @@ class Hangman
         @secret_word = @word_list[rand(854)].chars
         @guess = Array.new(@secret_word.length, " _ ")
         @num_of_guesses = 6
+        @hints_left = 1
         @starting_bal = bet
         @balance = bet
         play
@@ -18,13 +19,29 @@ class Hangman
     def display_word
         puts "Welcome to Hangman!"
         puts "Bet: #{@balance}"
+        puts "Guesses left: #{@num_of_guesses}"
+        puts "Hints left: #{@hints_left} (Type '!' to use hint)\n\n"
         puts @guess.join.capitalize
+    end
+
+    def get_hint
+        if @hints_left > 0
+            puts CLEAR_SCREEN
+            puts "Hint used!"
+            @hints_left -= 1
+            random_index = rand(@secret_word.length)
+            @guess[random_index] = @secret_word[random_index]
+        end
     end
 
     def get_guess
         puts "\nPlease enter a character (A-Z) to guess: "
         user_input = gets.chomp
-        if user_input.count("a-zA-Z") > 0
+        if user_input == "!"
+            get_hint
+        elsif user_input == ""
+            puts "Please enter a character between A-Z..."
+        elsif user_input.count("a-zA-Z") > 0
             check_char(user_input)
         else
             puts "Please enter a character between A-Z..."
@@ -85,7 +102,7 @@ class Hangman
             get_guess
         end
         puts "You have #{@win ? "won #{@balance}":"lost #{@starting_bal}"} tokens!"
-        puts @guess.join.capitalize
+        puts "The secret word: #{@secret_word.join.capitalize}"
         sleep(3)
         puts CLEAR_SCREEN
     end
