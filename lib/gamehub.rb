@@ -38,7 +38,18 @@ class GameHub
     end
 
     def withdraw_usd 
+        puts CLEAR_SCREEN
         puts "Please enter the token amount you would like to exchange for cash/$ (MAX: #{@balance})..."
+        user_input = gets.chomp
+        user_input = user_input.to_i
+        if user_input.between?(50, @balance)
+            @balance -= user_input 
+            puts "You have successfully withdrawn $#{user_input} cash!"
+        else 
+            puts "Please enter a valid value (50-#{@balance})..."
+            sleep(2)
+            withdraw_usd
+        end
     end
 
     def exchange_tokens_usd
