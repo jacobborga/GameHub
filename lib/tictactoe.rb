@@ -14,8 +14,13 @@ class TicTacToe
     def initialize(bet)
         @board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
         @balance = bet 
+        @starting_bal = bet
         @available_indexes = []
         play
+    end
+
+    def balance
+        @balance 
     end
 
     def input_to_index(user_input)
@@ -23,6 +28,7 @@ class TicTacToe
     end
 
     def display_board
+        puts CLEAR_SCREEN
         row = "-----------"
         puts " #{@board[0]} | #{@board[1]} | #{@board[2]} "
         puts row
@@ -43,7 +49,9 @@ class TicTacToe
     end
 
     def update_available_indexes
-        @board.find_index("")
+        @available_indexes = @board.each_with_index.select { |pos, index| pos == "" || pos == " " }.map{ |pair| pair[1] }
+        random_choice = @available_indexes.shuffle.pop
+        return random_choice
     end
 
     def move(index, player)
@@ -67,16 +75,27 @@ class TicTacToe
     end
 
     def turn
-        puts "Please enter a number 1-9: "
-        user_input = gets.chomp
-        user_input = input_to_index(user_input)
-        current = current_player
-        if valid_move?(user_input)
-          move(user_input, current)
-          display_board
+        if current_player == "X"
+            puts "Please enter a number 1-9: "
+            user_input = gets.chomp
+            user_input = input_to_index(user_input)
+            current = current_player
+            if valid_move?(user_input)
+                move(user_input, "X")
+                display_board
+            else
+                puts "Please enter a valid input 1-9: "
+                turn
+            end
         else
-          puts "Please enter a valid input 1-9: "
-          turn
+            index = update_available_indexes
+            if valid_move?(index)
+                move(index, "O")
+                display_board
+            else
+                puts "Uh oh something went wrong with the computer decided the random index for TTT"
+                return
+            end
         end
     end
 
@@ -123,8 +142,10 @@ class TicTacToe
         if !win_combo
             return nil
         elsif (@board[win_combo[0]] == "X" && @board[win_combo[1]] == "X" && @board[win_combo[2]] == "X")
+            @balance *= 2
             return "X"
         elsif (@board[win_combo[0]] == "O" && @board[win_combo[1]] == "O" && @board[win_combo[2]] == "O")
+            @balance -= @balance
             return "O"
         end
     end
@@ -137,7 +158,11 @@ class TicTacToe
             puts "Cat's Game!"
         else
             win = winner
-            puts "Congratulations #{win}!"
+            if win == "X"
+                puts "Congratulations you have won #{@balance} tokens!"
+            else
+                puts "Sorry you have lost #{@starting_bal} tokens!"
+            end
         end
     end
 end
