@@ -39,12 +39,12 @@ class RPS
             if win?
                 @balance *= 2
                 puts "Congrats you have won #{@balance}"
-                sleep(3)
+                sleep(2)
                 puts CLEAR_SCREEN
             else
                 puts "Sorry... you have lost #{@balance}"
                 @balance -= @balance
-                sleep(3)
+                sleep(2)
                 puts CLEAR_SCREEN
             end
         else

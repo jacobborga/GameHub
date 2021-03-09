@@ -103,7 +103,7 @@ class Hangman
         end
         puts "You have #{@win ? "won #{@balance}":"lost #{@starting_bal}"} tokens!"
         puts "The secret word: #{@secret_word.join.capitalize}"
-        sleep(3)
+        sleep(2)
         puts CLEAR_SCREEN
     end
 end
