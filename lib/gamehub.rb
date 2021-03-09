@@ -90,7 +90,7 @@ class GameHub
         when 3
             puts CLEAR_SCREEN
             hangman = Hangman.new
-            # hangman.play
+            hangman.play
             display_main_menu
         when 4
             puts CLEAR_SCREEN
