@@ -74,6 +74,7 @@ class Hangman
         # Word list credited to dwyl @ https://github.com/dwyl/english-words
         file = File.open("./data/words.txt", "r")
         @word_list = file.read.split.map(&:chomp)
+        @word_list = @word_list.collect(&:strip)
     end
 
     def win?
@@ -101,6 +102,7 @@ class Hangman
             display_word
             get_guess
         end
+        puts CLEAR_SCREEN
         puts "You have #{@win ? "won #{@balance}":"lost #{@starting_bal}"} tokens!"
         puts "The secret word: #{@secret_word.join.capitalize}"
         sleep(2)
